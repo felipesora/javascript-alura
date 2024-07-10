@@ -38,7 +38,7 @@ const tempoNaTela = document.querySelector('#timer');
 
 
 // temporizador
-let tempoDecorridoEmSegundos = 1500;
+let tempoDecorridoEmSegundos = 5 //1500;
 let intervaloId = null
 
 // Eventos de clicks dos botões
