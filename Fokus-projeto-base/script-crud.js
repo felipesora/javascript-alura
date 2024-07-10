@@ -4,8 +4,10 @@ const btnAdicionarTarefa = document.querySelector('.app__button--add-task');
 const formAdicionarTarefa = document.querySelector('.app__form-add-task');
 const textArea = document.querySelector('.app__form-textarea');
 const ulTarefas = document.querySelector('.app__section-task-list');
+const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-task-description');
 
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+let tarefaSelecionada = null;
 
 function atualizarTarefas () {
     localStorage.setItem('tarefas', JSON.stringify(tarefas)) //guarda a lista de tarefas dentro de um localStorage
@@ -35,7 +37,7 @@ function criarElementoTarefa(tarefa){
     botao.onclick = () => {
         //debugger -> ajudar a entender o erro
         const novaDescricao = prompt("Qual é o novo nome da tarefa?");
-        console.log('Nova descrição da tarefa: ', novaDescricao)
+        //console.log('Nova descrição da tarefa: ', novaDescricao)
         if (novaDescricao) {
             paragrafo.textContent = novaDescricao;
             tarefa.descricao = novaDescricao
@@ -51,6 +53,22 @@ function criarElementoTarefa(tarefa){
     li.append(svg);
     li.append(paragrafo);
     li.append(botao);
+
+    li.onclick = () => {  // marcar tarefa em andamento
+        document.querySelectorAll('.app__section-task-list-item-active')
+        .forEach(elemento => {
+            elemento.classList.remove('app__section-task-list-item-active') // remover a marcação do li
+        })
+        if (tarefaSelecionada == tarefa) { // tirar a tarefa em andamento, caso clique na que já está selecionada
+            paragrafoDescricaoTarefa.textContent = ''
+            tarefaSelecionada = null
+            return
+        }
+        tarefaSelecionada = tarefa
+        paragrafoDescricaoTarefa.textContent = tarefa.descricao 
+
+        li.classList.add('app__section-task-list-item-active') // adicionar marcação no li
+    }
 
     return li;
 }
